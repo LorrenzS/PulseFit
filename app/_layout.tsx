@@ -5,12 +5,13 @@ import {
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { Platform, StyleSheet, View } from "react-native";
+import { Platform } from "react-native";
 import "react-native-reanimated";
 
 import HeaderWeb from "@/components/ui/HeaderWeb";
 import { Colors } from "@/constants/Colors";
+import { AppointmentsProvider } from "@/context/AppointmentsContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import {
   DefaultTheme as PaperDefaultTheme,
@@ -40,32 +41,18 @@ export default function RootLayout() {
           },
         }}
       >
-        {/* <AuthProvider> */}
-        {Platform.OS === "web" && <HeaderWeb />}
+        <AuthProvider>
+          <AppointmentsProvider>
+            {Platform.OS === "web" && <HeaderWeb />}
 
-        <View style={styles.centerContainer}>
-          <View style={styles.contentContainer}>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="signin" options={{ headerShown: false }} />
               <Stack.Screen name="+not-found" />
             </Stack>
-          </View>
-        </View>
-        {/* </AuthProvider> */}
+          </AppointmentsProvider>
+        </AuthProvider>
       </PaperProvider>
-      <StatusBar style="auto" />
     </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  centerContainer: {
-    width: "100%",
-    alignItems: "center",
-    flex: 1,
-  },
-  contentContainer: {
-    width: "100%",
-    maxWidth: 1200,
-  },
-});

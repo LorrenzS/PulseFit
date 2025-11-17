@@ -29,6 +29,17 @@ export default function TabLayout() {
           },
           default: {},
         }),
+        sceneStyle: Platform.select({
+          // Hide the tab bar on web
+          web: {
+            backgroundColor: Colors[colorScheme ?? "light"].background,
+          },
+          ios: {
+            // Use a transparent background on iOS to show the blur effect
+            position: "absolute",
+          },
+          default: {},
+        }),
       }}
     >
       <Tabs.Screen
