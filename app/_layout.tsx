@@ -36,6 +36,10 @@ export default function RootLayout() {
           ...PaperDefaultTheme,
           colors: {
             ...PaperDefaultTheme.colors,
+            surface: Colors[colorScheme ?? "light"].white,
+            surfaceVariant: Colors[colorScheme ?? "light"].white,
+            onSurface: Colors[colorScheme ?? "light"].tint,
+            primaryContainer: Colors[colorScheme ?? "light"].background,
             primary: Colors[colorScheme ?? "light"].tint,
             background: Colors[colorScheme ?? "light"].background,
           },

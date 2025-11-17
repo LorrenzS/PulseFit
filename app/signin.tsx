@@ -47,56 +47,58 @@ export default function SignInScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">
-        {mode === "signin" ? "Sign in" : "Create account"}
-      </ThemedText>
+      <ThemedView style={styles.contentContainer}>
+        <ThemedText type="title">
+          {mode === "signin" ? "Sign in" : "Create account"}
+        </ThemedText>
 
-      <View style={styles.form}>
-        <TextInput
-          label="Email"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          style={styles.input}
-        />
+        <View style={styles.form}>
+          <TextInput
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            style={styles.input}
+          />
 
-        <TextInput
-          label="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          style={styles.input}
-        />
+          <TextInput
+            label="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            style={styles.input}
+          />
 
-        {error ? (
-          <ThemedText type="default" style={styles.error}>
-            {error}
-          </ThemedText>
-        ) : null}
+          {error ? (
+            <ThemedText type="default" style={styles.error}>
+              {error}
+            </ThemedText>
+          ) : null}
 
-        {loading || authLoading ? (
-          <ActivityIndicator style={{ marginTop: 12 }} />
-        ) : (
+          {loading || authLoading ? (
+            <ActivityIndicator style={{ marginTop: 12 }} />
+          ) : (
+            <ThemedButton
+              mode="contained"
+              onPress={handleSubmit}
+              style={{ marginTop: 8 }}
+            >
+              {mode === "signin" ? "Sign in" : "Create account"}
+            </ThemedButton>
+          )}
+
           <ThemedButton
-            mode="contained"
-            onPress={handleSubmit}
-            style={{ marginTop: 8 }}
+            mode="outlined"
+            onPress={() => setMode(mode === "signin" ? "signup" : "signin")}
+            style={{ marginTop: 12 }}
           >
-            {mode === "signin" ? "Sign in" : "Create account"}
+            {mode === "signin"
+              ? "Create an account"
+              : "Already have an account? Sign in"}
           </ThemedButton>
-        )}
-
-        <ThemedButton
-          mode="outlined"
-          onPress={() => setMode(mode === "signin" ? "signup" : "signin")}
-          style={{ marginTop: 12 }}
-        >
-          {mode === "signin"
-            ? "Create an account"
-            : "Already have an account? Sign in"}
-        </ThemedButton>
-      </View>
+        </View>
+      </ThemedView>
     </ThemedView>
   );
 }
@@ -105,7 +107,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+    width: "100%",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  contentContainer: {
+    width: "100%",
+    maxWidth: 400,
   },
   form: {
     marginTop: 16,

@@ -104,11 +104,12 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20,
     width: "100%",
+    padding: 24,
     alignItems: "center",
   },
   contentContainer: {
     width: "100%",
-    maxWidth: 1200,
+    maxWidth: 900,
   },
   titleContainer: {
     flexDirection: "row",

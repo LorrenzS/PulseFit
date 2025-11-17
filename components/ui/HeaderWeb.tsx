@@ -1,7 +1,10 @@
 import { Image } from "expo-image";
-import { Link } from "expo-router";
-import React from "react";
+import { Link, useRouter } from "expo-router";
+import React, { useState } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
+import { Avatar, Button, Menu } from "react-native-paper";
+
+import { useAuth } from "@/context/AuthContext";
 
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -10,6 +13,23 @@ export default function HeaderWeb() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
 
+  const { user, signOut } = useAuth();
+  const router = useRouter();
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const openMenu = () => setMenuVisible(true);
+  const closeMenu = () => setMenuVisible(false);
+
+  const handleSignOut = async () => {
+    closeMenu();
+    try {
+      await signOut();
+    } catch (e) {
+      // ignore
+    }
+    router.replace("/signin");
+  };
+
   if (Platform.OS !== "web") return null;
 
   return (
@@ -17,7 +37,10 @@ export default function HeaderWeb() {
       accessible
       style={[
         styles.container,
-        { borderBottomColor: colors.icon, backgroundColor: colors.background },
+        {
+          borderBottomColor: colors.border,
+          backgroundColor: colors.background,
+        },
       ]}
     >
       <Link href="/" style={styles.brandLink} accessibilityLabel="Go to home">
@@ -29,9 +52,40 @@ export default function HeaderWeb() {
         />
       </Link>
       <View style={styles.nav} accessible accessibilityLabel="Main navigation">
-        <Link href="/" style={styles.navLink} accessibilityLabel="Home">
-          <Text style={[styles.navText, { color: colors.text }]}>Home</Text>
-        </Link>
+        {user ? (
+          <Menu
+            visible={menuVisible}
+            onDismiss={closeMenu}
+            anchor={(() => {
+              const initials = (user.displayName || user.email || "")
+                .split(" ")
+                .map((s: string) => s[0])
+                .slice(0, 2)
+                .join("") as string;
+              return (
+                <Button onPress={openMenu} compact style={styles.userButton}>
+                  <Avatar.Text size={28} label={initials} />
+                  <Text style={[styles.userName, { color: colors.text }]}>
+                    {" "}
+                    {user.displayName ?? user.email}
+                  </Text>
+                </Button>
+              );
+            })()}
+          >
+            <Menu.Item onPress={handleSignOut} title="Log out" />
+          </Menu>
+        ) : (
+          <Link
+            href="/signin"
+            style={styles.navLink}
+            accessibilityLabel="Sign in"
+          >
+            <Text style={[styles.navText, { color: colors.text }]}>
+              Sign in
+            </Text>
+          </Link>
+        )}
       </View>
     </View>
   );
@@ -47,6 +101,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderBottomWidth: StyleSheet.hairlineWidth,
     backgroundColor: "transparent",
+  },
+  userButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+  },
+  userName: {
+    marginLeft: 8,
+    fontSize: 14,
   },
   brandLink: {
     display: "flex",

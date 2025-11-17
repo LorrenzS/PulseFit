@@ -37,7 +37,7 @@ type AppointmentsContextType = {
     title: string;
     datetime: string;
     notes?: string;
-  }) => Promise<void>;
+  }) => Promise<string>;
   updateAppointment: (id: string, patch: Partial<Appointment>) => Promise<void>;
   deleteAppointment: (id: string) => Promise<void>;
 };
@@ -105,13 +105,14 @@ export function AppointmentsProvider({
     }) => {
       if (!user) throw new Error("Not authenticated");
       const col = collection(db, "users", user.uid, "appointments");
-      await addDoc(col, {
+      const ref = await addDoc(col, {
         title,
         datetime: new Date(datetime).toISOString(),
         notes: notes ?? "",
         status: "upcoming",
         createdAt: serverTimestamp(),
       });
+      return ref.id;
     },
     [user],
   );
