@@ -26,9 +26,6 @@ export default function HeaderWeb() {
         <Link href="/" style={styles.navLink}>
           <Text style={[styles.navText, { color: colors.text }]}>Home</Text>
         </Link>
-        <Link href="/explore" style={styles.navLink}>
-          <Text style={[styles.navText, { color: colors.text }]}>Explore</Text>
-        </Link>
       </View>
     </View>
   );

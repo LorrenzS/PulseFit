@@ -9,14 +9,18 @@ import { StatusBar } from "expo-status-bar";
 import { Platform, StyleSheet, View } from "react-native";
 import "react-native-reanimated";
 
-import FooterWeb from "@/components/ui/FooterWeb";
 import HeaderWeb from "@/components/ui/HeaderWeb";
+import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import {
+  DefaultTheme as PaperDefaultTheme,
+  Provider as PaperProvider,
+} from "react-native-paper";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    Helvetica: require("../assets/fonts/Helvetica.ttf"),
   });
 
   if (!loaded) {
@@ -26,9 +30,19 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      {Platform.OS === "web" && <HeaderWeb />}
+      <PaperProvider
+        theme={{
+          ...PaperDefaultTheme,
+          colors: {
+            ...PaperDefaultTheme.colors,
+            primary: Colors[colorScheme ?? "light"].tint,
+            background: Colors[colorScheme ?? "light"].background,
+          },
+        }}
+      >
+        {/* <AuthProvider> */}
+        {Platform.OS === "web" && <HeaderWeb />}
 
-      {Platform.OS === "web" ? (
         <View style={styles.centerContainer}>
           <View style={styles.contentContainer}>
             <Stack>
@@ -37,14 +51,8 @@ export default function RootLayout() {
             </Stack>
           </View>
         </View>
-      ) : (
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      )}
-
-      {Platform.OS === "web" && <FooterWeb />}
+        {/* </AuthProvider> */}
+      </PaperProvider>
       <StatusBar style="auto" />
     </ThemeProvider>
   );
