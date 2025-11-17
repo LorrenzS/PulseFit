@@ -49,6 +49,9 @@ export default ({ config }) => {
       EXPO_FIREBASE_MESSAGING_SENDER_ID:
         process.env.EXPO_FIREBASE_MESSAGING_SENDER_ID,
       EXPO_FIREBASE_APP_ID: process.env.EXPO_FIREBASE_APP_ID,
+      eas: {
+        projectId: "992a3a00-6e3c-4064-9a06-1805cbf0c1e6",
+      },
     },
   };
 };

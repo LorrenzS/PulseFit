@@ -83,40 +83,19 @@ You can provide these via your shell environment or via EAS/CI secrets for produ
 - The root layout constrains content width for web (max-width ~1200px) and renders `HeaderWeb`.
 - The UI uses `ThemedText` / `ThemedView` wrappers to keep typography and colors consistent with `constants/Colors.ts`.
 
-## Type checking & linting
+## Next improvements
 
-Run a TypeScript check locally:
-
-```bash
-npx tsc --noEmit
-```
-
-Run ESLint (Expo preset):
-
-```bash
-npm run lint
-```
-
-## Troubleshooting
-
-- Metro caching issues: clear Expo cache when you see stale builds
-
-```bash
-npx expo start -c
-```
-
-- If Firebase auth fails, verify your environment variables and the Firebase project configuration.
-- If web layout looks wrong, inspect `app/_layout.tsx` and `components/ui/HeaderWeb.tsx` — those files contain web-specific wrappers and the max-width container.
-
-## Next improvements (ideas)
-
-- Add a native-friendly ICS share flow using `expo-file-system` + `expo-sharing` for reliable calendar import on iOS/Android.
 - Add unit/integration tests for context logic (Auth + Appointments).
 - Add better timezone handling for appointment datetimes (store timezone or use UTC consistently).
 
-## Contributing
+## Live demo
 
-PRs are welcome — please run the lint and TypeScript checks before submitting. If you're making changes to Firebase rules or project credentials, use environment configs and avoid committing secrets.
+- Demo: <https://lorrenzs-pulsefit--27cq67sn0d.expo.app/signin>
+
+Public test account (for demo):
+
+- Username: <test@pulsefit.com>
+- Password: Test1234!
 
 ## License
 
